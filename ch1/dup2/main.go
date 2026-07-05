@@ -29,6 +29,12 @@ func main() {
 	}
 }
 
+// map 和 struct 的值传递区别：
+//   - struct（如 os.File）是值类型，传值会复制整个结构体，
+//     函数内部拿到的是独立副本，修改不影响外部，所以 f 必须传指针 *os.File。
+//   - map 是引用类型，变量内部是指向底层哈希表的描述符（含指针），
+//     传值时只复制描述符，底层数据仍是同一份，所以 counts 不用传指针，
+//     函数内部对它的增删改（如 counts[key]++）外部也能看到。
 func countLines(f *os.File, counts map[string]int) {
 	input := bufio.NewScanner(f)
 	for input.Scan() {
