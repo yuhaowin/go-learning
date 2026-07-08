@@ -8,10 +8,10 @@ import (
 	"math"
 	"math/rand"
 	"os"
-	"time"
 )
 
-var palette = []color.Color{color.White, color.Black}
+var green color.Color = color.RGBA{0x28, 0x5f, 0x2d, 0xff}
+var palette = []color.Color{color.White, green}
 
 const (
 	whiteIndex = 0 // first color in palette
@@ -19,7 +19,6 @@ const (
 )
 
 func main() {
-	rand.Seed(time.Now().UTC().UnixNano())
 	lissajous(os.Stdout)
 }
 
