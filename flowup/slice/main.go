@@ -40,6 +40,18 @@ func main() {
 	fmt.Println("Extending slice")
 	fmt.Println(s4)
 	fmt.Println(s5)
+
+	// slice 添加数据
+	// 添加元素时如果超越cap，系统会重新分配更大的底层数组
+	s6 := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	s7 := append(s6, 8)
+	s8 := append(s7, 9)
+	s9 := append(s8, 10)
+
+	fmt.Println(s6, len(s6), cap(s6))
+	fmt.Println(s7, len(s7), cap(s7))
+	fmt.Println(s8, len(s8), cap(s9))
+	fmt.Println(s9, len(s9), cap(s9))
 }
 
 func update(s []int) {
