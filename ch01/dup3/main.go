@@ -15,7 +15,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "dup3: %v\n", err)
 			continue
 		}
-		for _, line := range strings.Split(string(data), "\n") {
+		for line := range strings.SplitSeq(string(data), "\n") {
 			counts[line]++
 		}
 	}
