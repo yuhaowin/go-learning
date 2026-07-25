@@ -10,8 +10,26 @@ type Retriever interface {
 	Get(url string) string
 }
 
+type Poster interface {
+	Post(url string) string
+}
+
+type Connector interface {
+	Poster
+	Retriever
+}
+
 func download(r Retriever) string {
 	return r.Get("https://www.baidu.com")
+}
+
+func upload(p Poster) string {
+	return p.Post("https://www.baidu.com")
+}
+
+func session(c Connector) {
+	c.Post("")
+	c.Get("")
 }
 
 func main() {
@@ -21,7 +39,7 @@ func main() {
 	inspect(r)
 	fmt.Println(&r)
 
-	r = &real.Retriever{
+	r = real.Retriever{
 		UserAgent: "Mozilla/5.0",
 		Timeout:   10,
 	}
