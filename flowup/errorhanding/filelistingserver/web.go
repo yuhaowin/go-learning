@@ -8,12 +8,15 @@ import (
 	"os"
 )
 
+// userError 标记可直接展示给用户的错误：内嵌 error（Error() string 供日志记录），
+// 另加 Message() string 作为对外展示的提示文案，与内部系统错误区分开。
+// 相当于 userError 要求同时满足 error 接口（即有 Error() string 方法）和自己新增的 Message() string 方法。
 type userError interface {
-	error
+	error // 接口嵌入（interface embedding）
 	Message() string
 }
 
-type appHandler func(writer http.ResponseWriter, request *http.Request) error
+type appHandler func(http.ResponseWriter, *http.Request) error
 
 func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
