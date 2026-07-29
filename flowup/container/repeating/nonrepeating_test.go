@@ -39,15 +39,18 @@ func TestSubstr(t *testing.T) {
 // go test -bench . -cpuprofile=cpu.out
 // go tool pprof cpu.out
 // ---> web
+// ---> quit
 
 func BenchmarkSubstr(b *testing.B) {
-	s := "黑化肥挥发发灰会花飞灰化肥挥发发黑会飞花"
-	//for i := 0; i < 13; i++ {
-	//	s = s + s
-	//}
-	//b.Logf("len(s) = %d", len(s))
+
 	ans := 8
-	//b.ResetTimer()
+	s := "黑化肥挥发发灰会花飞灰化肥挥发发黑会飞花"
+	for range 10 {
+		s = s + s
+	}
+	b.Logf("len(s) = %d", len(s))
+
+	b.ResetTimer() // 准备数据的时间，不计入 benchmark
 
 	for i := 0; i < b.N; i++ {
 		actual := lengthOfNonRepeatingSubStr(s)
