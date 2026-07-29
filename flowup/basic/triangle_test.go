@@ -2,6 +2,10 @@ package main
 
 import "testing"
 
+// go test .
+// go test -coverprofile=c.out
+// go tool cover -html=c.out
+
 func TestTriangle(t *testing.T) {
 
 	tests := []struct{ a, b, c int }{
