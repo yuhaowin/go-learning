@@ -76,3 +76,5 @@ type PathError = fs.PathError
 获取panic的值
 
 如果无法处理，可重新panic
+
+Debugging Sucks! Testing Rocks!
