@@ -28,12 +28,17 @@ go env GOPATH
 
 ### Global GOPATH vs Project GOPATH（GoLand/IntelliJ 概念）
 
-这是 GoLand 等 IDE 的概念，不是 `go` 命令本身的术语——`go env` 只有一个全局 `GOPATH`。GoLand 在 GOPATH 模式（Modules 出现前）下把 GOPATH 配置拆成两层：
+这是 GoLand 等 IDE 的概念，不是 `go` 命令本身的术语——`go env` 只有一个全局 `GOPATH`。GoLand 在 GOPATH 模式（Modules 出现前）下把
+GOPATH 配置拆成两层：
 
-- **Global GOPATH**：即 `go env GOPATH` 返回的路径（本机是 `/Users/sqb/go`），对所有 Go 项目生效，是默认共享工作区。对应 GoLand `Preferences → Languages & Frameworks → Go → GOPATH` 里的 "Global GOPATH"。
-- **Project GOPATH**：GoLand 允许给单个项目额外指定一个只在该项目生效的 GOPATH 目录，配置存在项目的 `.idea/` 里，不影响其他项目。用途是在没有 Modules 时给项目做依赖隔离（不同项目可能需要同一个包的不同版本）。解析时 Project GOPATH 优先于 Global GOPATH，效果类似把两者用 `:` 拼进 `GOPATH` 环境变量。
+- **Global GOPATH**：即 `go env GOPATH` 返回的路径（本机是 `/Users/sqb/go`），对所有 Go 项目生效，是默认共享工作区。对应
+  GoLand `Preferences → Languages & Frameworks → Go → GOPATH` 里的 "Global GOPATH"。
+- **Project GOPATH**：GoLand 允许给单个项目额外指定一个只在该项目生效的 GOPATH 目录，配置存在项目的 `.idea/`
+  里，不影响其他项目。用途是在没有 Modules 时给项目做依赖隔离（不同项目可能需要同一个包的不同版本）。解析时 Project GOPATH
+  优先于 Global GOPATH，效果类似把两者用 `:` 拼进 `GOPATH` 环境变量。
 
-本仓库 `.idea/*.xml` 里没有任何 GOPATH 相关配置，因为项目用的是 Go Modules（有 `go.mod`），GoLand 检测到 Modules 模式后会切换依赖解析方式，Global/Project GOPATH 完全不参与当前项目的 import 解析，只在未启用 Modules 的老项目里才用得上。
+本仓库 `.idea/*.xml` 里没有任何 GOPATH 相关配置，因为项目用的是 Go Modules（有 `go.mod`），GoLand 检测到 Modules
+模式后会切换依赖解析方式，Global/Project GOPATH 完全不参与当前项目的 import 解析，只在未启用 Modules 的老项目里才用得上。
 
 ## Go Modules
 
@@ -60,9 +65,17 @@ go 1.26
 
 常用命令：
 
-| 命令                        | 作用                                             |
-|-----------------------------|--------------------------------------------------|
-| `go mod init <module-path>` | 初始化，生成 `go.mod`                            |
-| `go get <pkg>@<version>`    | 添加/升级依赖，写入 `go.mod`/`go.sum`            |
-| `go mod tidy`               | 按代码实际 import 情况补全缺失依赖、清掉未用到的 |
-| `go mod why <pkg>`          | 查看某依赖为什么被引入                           |
+| 命令                        | 作用                                                                     |
+|-----------------------------|--------------------------------------------------------------------------|
+| `go mod init <module-path>` | 初始化，生成 `go.mod`                                                    |
+| `go get <pkg>@<version>`    | 添加/升级依赖，写入 `go.mod`/`go.sum`                                    |
+| `go mod tidy`               | 按代码实际 import 情况补全缺失依赖、清掉未用到的                         |
+| `go mod why <pkg>`          | 查看某依赖为什么被引入                                                   |
+| `go mod download`           | 把 `go.mod` 里的依赖下载到本地模块缓存，不改 `go.mod`/`go.sum`，也不编译 |
+
+`go mod download` 的常见用法：
+
+- `go mod download` — 下载当前模块所有依赖（及其间接依赖）到本地缓存。
+- `go mod download all` — 下载构建/测试所需的全部模块，包括测试依赖等。
+- `go mod download -x` — 打印详细执行过程（调试用）。
+- `go mod download <module>` — 只下载指定的某个模块。
