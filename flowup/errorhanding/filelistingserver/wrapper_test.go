@@ -61,7 +61,7 @@ var tests = []struct {
 
 func TestErrWrapper(t *testing.T) {
 	for _, tt := range tests {
-		f := errWrapper(tt.h)
+		f := wrapper(tt.h)
 		response := httptest.NewRecorder()
 		request := httptest.NewRequest(http.MethodGet, "http://www.imooc.com", nil)
 		f(response, request)
@@ -72,7 +72,7 @@ func TestErrWrapper(t *testing.T) {
 
 func TestErrWrapperInServer(t *testing.T) {
 	for _, tt := range tests {
-		f := errWrapper(tt.h)
+		f := wrapper(tt.h)
 		server := httptest.NewServer(http.HandlerFunc(f))
 		resp, _ := http.Get(server.URL)
 

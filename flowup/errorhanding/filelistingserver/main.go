@@ -18,7 +18,7 @@ type userError interface {
 
 type appHandler func(http.ResponseWriter, *http.Request) error
 
-func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
+func wrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		// panic
 		defer func() {
@@ -54,7 +54,7 @@ func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", errWrapper(filelisting.HandleFileList))
+	http.HandleFunc("/", wrapper(filelisting.HandleFileList))
 	err := http.ListenAndServe(":8888", nil)
 	if err != nil {
 		panic(err)
