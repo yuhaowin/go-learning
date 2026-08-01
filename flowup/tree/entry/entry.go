@@ -33,7 +33,7 @@ func main() {
 	root.Left.Right = tree.CreateNode(2)
 	root.Print()
 
-	root.Right.Left.SetValue(5)
+	root.Right.Left.SetValue(6)
 	root.Right.Left.Print()
 
 	root.SetValue(2)
@@ -57,5 +57,16 @@ func main() {
 	root.TraverseFunc(func(node *tree.Node) {
 		nodeCount++
 	})
-	fmt.Println("NodeCount:", nodeCount)
+	fmt.Println("Node Count:", nodeCount)
+
+	fmt.Println("traverse with channel")
+
+	maxValue := 0
+	channel := root.TraverseWithChannel()
+	for node := range channel {
+		if node.Value > maxValue {
+			maxValue = node.Value
+		}
+	}
+	fmt.Println("Max node value:", maxValue)
 }
