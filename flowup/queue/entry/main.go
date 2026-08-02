@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"golearning/flowup/queue"
+
+	"github.com/yuhaowin/go-learning/flowup/queue"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module golearning
+module github.com/yuhaowin/go-learning
 
 go 1.26
 

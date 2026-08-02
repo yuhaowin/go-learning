@@ -2,8 +2,9 @@ package handler
 
 import (
 	"fmt"
-	"golearning/flowup/errorhanding/demo/apptype"
 	"net/http"
+
+	"github.com/yuhaowin/go-learning/flowup/errorhanding/demo/apptype"
 )
 
 // 编译期断言：确保 HandleHello 的签名始终满足 apptype.AppHandler，

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"golearning/ch02/tempconv"
 	"os"
 	"strconv"
+
+	"github.com/yuhaowin/go-learning/ch02/tempconv"
 )
 
 func main() {

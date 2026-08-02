@@ -4,8 +4,9 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"golearning/flowup/functional/fibonacci"
 	"os"
+
+	"github.com/yuhaowin/go-learning/flowup/functional/fibonacci"
 )
 
 func tryDefer1() {

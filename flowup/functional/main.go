@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"golearning/flowup/functional/fibonacci"
+
+	"github.com/yuhaowin/go-learning/flowup/functional/fibonacci"
 )
 
 func main() {

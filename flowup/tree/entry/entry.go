@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"golearning/flowup/tree"
+
+	"github.com/yuhaowin/go-learning/flowup/tree"
 )
 
 // MyTreeNode 通过组合的方式扩展已有的类型

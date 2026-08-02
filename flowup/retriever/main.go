@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"golearning/flowup/retriever/mock"
-	"golearning/flowup/retriever/real"
+
+	"github.com/yuhaowin/go-learning/flowup/retriever/mock"
+	"github.com/yuhaowin/go-learning/flowup/retriever/real"
 )
 
 type Retriever interface {

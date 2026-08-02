@@ -1,10 +1,11 @@
 package main
 
 import (
-	"golearning/flowup/errorhanding/demo/apptype"
-	"golearning/flowup/errorhanding/demo/handler"
 	"log"
 	"net/http"
+
+	"github.com/yuhaowin/go-learning/flowup/errorhanding/demo/apptype"
+	"github.com/yuhaowin/go-learning/flowup/errorhanding/demo/handler"
 )
 
 func errWrapper(h apptype.AppHandler) http.HandlerFunc {
