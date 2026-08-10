@@ -1,21 +1,23 @@
 package engine
 
-// 带两个函数的接口
 type Parser interface {
 	Parse(contents []byte, url string) ParseResult
 	Serialize() (name string, args interface{})
 }
 
+// ParserFunc 定义一个函数类型，
+//
+//	函数类型声明（type X func(...)）：参数名可选，纯粹给阅读者看，编译器不关心，甚至同名不同名的两个类型只要参数类型和返回值类型一致就是同一类型。
 type ParserFunc func(contents []byte, url string) ParseResult
+
 type Request struct {
-	Url string
-	//ParserFunc ParserFunc
-	Parser Parser
+	Url        string
+	ParserFunc ParserFunc
 }
 
 type ParseResult struct {
 	Requests []Request
-	Items    []Item
+	Items    []any
 }
 
 type Item struct {
@@ -23,6 +25,10 @@ type Item struct {
 	Url     string
 	Type    string //存储的配置
 	Payload interface{}
+}
+
+func NilFuncParser(content []byte, name string) ParseResult {
+	return ParseResult{}
 }
 
 type NilParser struct{}
@@ -35,7 +41,7 @@ func (NilParser) Serialize() (name string, args interface{}) {
 	return "NilParser", nil
 }
 
-// 函数类型的Parser
+// FuncParser 函数类型的Parser
 type FuncParser struct {
 	parser ParserFunc //对应解析函数
 	name   string     //函数名
@@ -49,8 +55,7 @@ func (f *FuncParser) Serialize() (name string, args interface{}) {
 	return f.name, nil
 }
 
-func NewFuncParser(
-	p ParserFunc, name string) *FuncParser {
+func NewFuncParser(p ParserFunc, name string) *FuncParser {
 	return &FuncParser{
 		parser: p,
 		name:   name,

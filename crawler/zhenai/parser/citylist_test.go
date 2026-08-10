@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"crawler/fetcher"
 	"testing"
+
+	"github.com/yuhaowin/go-learning/crawler/fetcher"
 )
 
 func TestParseCityList(t *testing.T) {

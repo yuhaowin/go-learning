@@ -3,7 +3,7 @@ package fetcher
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -18,7 +18,6 @@ var rateLimiter = time.Tick(10 * time.Millisecond)
 
 func Fetch(url string) ([]byte, error) {
 	<-rateLimiter
-	//log.Printf("Fetching url %s", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -26,39 +25,24 @@ func Fetch(url string) ([]byte, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		//fmt.Println("Error: status code", resp.StatusCode)
-		return nil,
-			fmt.Errorf("wrong status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf("wrong status code: %d", resp.StatusCode)
 	}
 
 	//不要peek
 	bodyReader := bufio.NewReader(resp.Body)
 
-	//自动find encoding
-	//e :=determinEncoding(resp.Body)
-	e := determinEncoding(bodyReader)
+	e := determineEncoding(bodyReader)
 
-	//GBK的转换
-	//utf8Reader := transform.NewReader(resp.Body, simplifiedchinese.GBK.NewDecoder())
-	//utf8Reader := transform.NewReader(resp.Body, e.NewDecoder())
 	utf8Reader := transform.NewReader(bodyReader, e.NewDecoder())
-	return ioutil.ReadAll(utf8Reader)
-
-	//all, err := ioutil.ReadAll(utf8Reader)
-	//if err != nil {
-	//	panic(err)
-	//}
-
+	return io.ReadAll(utf8Reader)
 }
 
-func determinEncoding(r *bufio.Reader) encoding.Encoding {
-	//bytes, e := bufio.NewReader(r).Peek(1024)
-	bytes, e := bufio.NewReader(r).Peek(1024)
-	if e != nil {
-		//panic(e)
-		log.Printf("Encoding error: %v", e)
+func determineEncoding(r *bufio.Reader) encoding.Encoding {
+	bytes, err := bufio.NewReader(r).Peek(1024)
+	if err != nil {
+		log.Printf("Encoding error: %v", err)
 		return unicode.UTF8
 	}
-	e2, _, _ := charset.DetermineEncoding(bytes, "")
-	return e2
+	e, _, _ := charset.DetermineEncoding(bytes, "")
+	return e
 }
