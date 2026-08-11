@@ -12,13 +12,11 @@ type Profile struct {
 	Marriage   string
 	Education  string
 	Occupation string
-	Hokou      string
-	Xinzuo     string
 	House      string
 	Car        string
 }
 
-func FromJsonObj(o interface{}) (Profile, error) {
+func FromJsonObj(o any) (Profile, error) {
 	var profile Profile
 	s, err := json.Marshal(o)
 	if err != nil {
