@@ -27,7 +27,7 @@ func (e SimpleEngine) Run(seeds ...Request) {
 			continue
 		}
 
-		result := r.ParserFunc(body, "")
+		result := r.ParserFunc(body)
 		requests = append(requests, result.Requests...)
 		log.Printf("Got items %v", result.Items)
 	}

@@ -13,7 +13,7 @@ func TestParseCityList(t *testing.T) {
 		panic(e)
 	}
 
-	result := ParseCityList(contents, "")
+	result := ParseCityList(contents)
 	const resultSize = 494
 
 	if len(result.Requests) != resultSize {

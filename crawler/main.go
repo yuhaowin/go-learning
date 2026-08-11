@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/yuhaowin/go-learning/crawler/engine"
-	"github.com/yuhaowin/go-learning/crawler/zhenai/parser"
+	"github.com/yuhaowin/go-learning/crawler/parser"
 )
 
 func main() {

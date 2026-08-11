@@ -19,10 +19,7 @@ var OccupationRe = regexp.MustCompile(`<td><span class="label">职业： </span>
 var HouseRe = regexp.MustCompile(`<td><span class="label">住房条件：</span><span field="">([^>]+)</span></td>`)
 var CarRe = regexp.MustCompile(`<td><span class="label">是否购车：</span><span field="">([^>]+)</span></td>`)
 
-// 提取id
-var idUrlRe = regexp.MustCompile(`http://album.zhenai.com/u/([\d]+)`)
-
-func ParseProfile(contents []byte, url string, name string) engine.ParseResult {
+func ParseProfile(contents []byte, name string) engine.ParseResult {
 	profile := model.Profile{}
 	profile.Name = name
 	age, e := strconv.Atoi(extractString(contents, ageRe))
@@ -55,26 +52,6 @@ func extractString(contents []byte, re *regexp.Regexp) string {
 	match := re.FindSubmatch(contents)
 	if len(match) >= 2 {
 		return string(match[1])
-	} else {
-		return ""
 	}
-}
-
-type ProfileParser struct {
-	userName string
-}
-
-func (p *ProfileParser) Parse(contents []byte, url string) engine.ParseResult {
-	return ParseProfile(contents, url, p.userName)
-
-}
-
-func (p *ProfileParser) Serialize() (name string, args interface{}) {
-	return "ProfileParser", p.userName
-}
-
-func NewProfileParser(name string) *ProfileParser {
-	return &ProfileParser{
-		userName: name,
-	}
+	return ""
 }
