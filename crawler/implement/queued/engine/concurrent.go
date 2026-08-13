@@ -1,27 +1,26 @@
 package engine
 
-import (
-	"log"
-)
+import "github.com/yuhaowin/go-learning/crawler/model"
 
 type Scheduler interface {
 	Notifier
-	Submit(Request)
-	WorkerChan() chan Request
+	Submit(model.Request)
+	WorkerChan() chan model.Request
 	Run()
 }
 
 type Notifier interface {
-	WorkerReady(chan Request)
+	WorkerReady(chan model.Request)
 }
 
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
+	ItemChan    chan any
 }
 
-func (e *ConcurrentEngine) Run(seeds ...Request) {
-	out := make(chan ParseResult)
+func (e *ConcurrentEngine) Run(seeds ...model.Request) {
+	out := make(chan model.ParseResult)
 	e.Scheduler.Run()
 	for i := 0; i < e.WorkerCount; i++ {
 		createWorker(e.Scheduler.WorkerChan(), out, e.Scheduler)
@@ -33,14 +32,18 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 
 	for {
 		result := <-out
-		log.Printf("Got items %v", result.Items)
+
+		for _, item := range result.Items {
+			go func() { e.ItemChan <- item }()
+		}
+
 		for _, request := range result.Requests {
 			e.Scheduler.Submit(request)
 		}
 	}
 }
 
-func createWorker(in chan Request, out chan ParseResult, notifier Notifier) {
+func createWorker(in chan model.Request, out chan model.ParseResult, notifier Notifier) {
 	go func() {
 		for {
 			notifier.WorkerReady(in)

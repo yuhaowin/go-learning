@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/yuhaowin/go-learning/crawler_concurrent/engine"
-	"github.com/yuhaowin/go-learning/crawler_concurrent/parser"
-	"github.com/yuhaowin/go-learning/crawler_concurrent/scheduler"
+	"github.com/yuhaowin/go-learning/crawler/implement/concurrent/engine"
+	"github.com/yuhaowin/go-learning/crawler/implement/concurrent/scheduler"
+	"github.com/yuhaowin/go-learning/crawler/model"
+	"github.com/yuhaowin/go-learning/crawler/parser"
+	"github.com/yuhaowin/go-learning/crawler/saver"
 )
 
 func main() {
@@ -14,9 +16,10 @@ func main() {
 		// 另外一层原因是 Go 的方法集规则：只要有一个方法使用了指针接收者（这里两个都是），那么只有 *SimpleScheduler 才能满足 Scheduler 这个接口，SimpleScheduler（值类型）是不满足的。所以 main.go:11 必须写 &scheduler.SimpleScheduler{} 传指针，否则会编译报错「SimpleScheduler does not implement Scheduler」。
 		Scheduler:   &scheduler.SimpleScheduler{},
 		WorkerCount: 10,
+		ItemChan:    saver.ItemSaver(),
 	}
 
-	e.Run(engine.Request{
+	e.Run(model.Request{
 		Url:        "http://www.zhenai.com/zhenghun",
 		ParserFunc: parser.ParseCityList,
 	})

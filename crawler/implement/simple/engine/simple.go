@@ -4,13 +4,15 @@ import (
 	"log"
 
 	"github.com/yuhaowin/go-learning/crawler/fetcher"
+	"github.com/yuhaowin/go-learning/crawler/model"
 )
 
 type SimpleEngine struct {
+	ItemChan chan any
 }
 
-func (e SimpleEngine) Run(seeds ...Request) {
-	var requests []Request
+func (e SimpleEngine) Run(seeds ...model.Request) {
+	var requests []model.Request
 
 	for _, r := range seeds {
 		requests = append(requests, r)
@@ -28,7 +30,11 @@ func (e SimpleEngine) Run(seeds ...Request) {
 		}
 
 		result := r.ParserFunc(body)
+
+		for _, item := range result.Items {
+			go func() { e.ItemChan <- item }()
+		}
+
 		requests = append(requests, result.Requests...)
-		log.Printf("Got items %v", result.Items)
 	}
 }

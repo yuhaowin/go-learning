@@ -3,21 +3,20 @@ package parser
 import (
 	"regexp"
 
-	"github.com/yuhaowin/go-learning/crawler/engine"
+	"github.com/yuhaowin/go-learning/crawler/model"
 )
 
 var (
 	cityListRe = regexp.MustCompile(`<a [^>]*href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`)
 )
 
-func ParseCityList(contents []byte) engine.ParseResult {
+func ParseCityList(contents []byte) model.ParseResult {
 
-	result := engine.ParseResult{}
+	result := model.ParseResult{}
 
 	matches := cityListRe.FindAllSubmatch(contents, -1)
 	for _, m := range matches {
-		result.Items = append(result.Items, "City "+string(m[2]))
-		result.Requests = append(result.Requests, engine.Request{
+		result.Requests = append(result.Requests, model.Request{
 			Url:        string(m[1]),
 			ParserFunc: ParseCity,
 		})
