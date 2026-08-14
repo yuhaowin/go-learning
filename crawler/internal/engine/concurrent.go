@@ -1,9 +1,5 @@
 package engine
 
-import (
-	"github.com/yuhaowin/go-learning/crawler/internal/model"
-)
-
 // Scheduler 由 internal/scheduler 下的具体实现（SimpleScheduler、QueuedScheduler）满足，
 // ConcurrentEngine 通过替换 Scheduler 实现来切换调度策略。
 
@@ -13,13 +9,13 @@ import (
 // main.go 里赋给 Scheduler 字段时传的就是 &scheduler.SimpleScheduler{} 指针。
 type Scheduler interface {
 	Notifier
-	Submit(model.Request)
-	WorkerChan() chan model.Request
+	Submit(Request)
+	WorkerChan() chan Request
 	Run()
 }
 
 type Notifier interface {
-	WorkerReady(chan model.Request)
+	WorkerReady(chan Request)
 }
 
 type ConcurrentEngine struct {
@@ -28,9 +24,9 @@ type ConcurrentEngine struct {
 	ItemChan    chan any
 }
 
-func (e *ConcurrentEngine) Run(seeds ...model.Request) {
+func (e *ConcurrentEngine) Run(seeds ...Request) {
 	e.Scheduler.Run()
-	out := make(chan model.ParseResult)
+	out := make(chan ParseResult)
 	for i := 0; i < e.WorkerCount; i++ {
 		createWorker(e.Scheduler.WorkerChan(), out, e.Scheduler)
 	}
@@ -52,7 +48,7 @@ func (e *ConcurrentEngine) Run(seeds ...model.Request) {
 	}
 }
 
-func createWorker(in chan model.Request, out chan model.ParseResult, notifier Notifier) {
+func createWorker(in chan Request, out chan ParseResult, notifier Notifier) {
 	go func() {
 		for {
 			notifier.WorkerReady(in)

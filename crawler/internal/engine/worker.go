@@ -4,15 +4,14 @@ import (
 	"log"
 
 	"github.com/yuhaowin/go-learning/crawler/internal/fetcher"
-	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 // Worker 被并发执行
-func Worker(r model.Request) (model.ParseResult, error) {
+func Worker(r Request) (ParseResult, error) {
 	body, err := fetcher.Fetch(r.Url)
 	if err != nil {
 		log.Printf("Fetcher: error fetching url %s: %v", r.Url, err)
-		return model.ParseResult{}, err
+		return ParseResult{}, err
 	}
 	return r.ParserFunc(body), nil
 }

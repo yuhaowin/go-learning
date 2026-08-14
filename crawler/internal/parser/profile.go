@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/yuhaowin/go-learning/crawler/internal/engine"
 	model2 "github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
@@ -18,7 +19,7 @@ var OccupationRe = regexp.MustCompile(`<td><span class="label">职业： </span>
 var HouseRe = regexp.MustCompile(`<td><span class="label">住房条件：</span><span field="">([^>]+)</span></td>`)
 var CarRe = regexp.MustCompile(`<td><span class="label">是否购车：</span><span field="">([^>]+)</span></td>`)
 
-func ParseProfile(contents []byte, name string) model2.ParseResult {
+func ParseProfile(contents []byte, name string) engine.ParseResult {
 	profile := model2.Profile{}
 	profile.Name = name
 	age, e := strconv.Atoi(extractString(contents, ageRe))
@@ -41,7 +42,7 @@ func ParseProfile(contents []byte, name string) model2.ParseResult {
 	profile.House = extractString(contents, HouseRe)
 	profile.Marriage = extractString(contents, marriageRe)
 
-	result := model2.ParseResult{
+	result := engine.ParseResult{
 		Items: []any{profile},
 	}
 	return result

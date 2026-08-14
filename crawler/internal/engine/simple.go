@@ -4,15 +4,14 @@ import (
 	"log"
 
 	"github.com/yuhaowin/go-learning/crawler/internal/fetcher"
-	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 type SimpleEngine struct {
 	ItemChan chan any
 }
 
-func (e SimpleEngine) Run(seeds ...model.Request) {
-	var requests []model.Request
+func (e SimpleEngine) Run(seeds ...Request) {
+	var requests []Request
 
 	for _, r := range seeds {
 		requests = append(requests, r)

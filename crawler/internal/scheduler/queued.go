@@ -1,36 +1,36 @@
 package scheduler
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/internal/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/engine"
 )
 
 type QueuedScheduler struct {
-	requestChan chan model.Request
-	workerChan  chan chan model.Request // 每个 worker 有自己的 channel of Request，所以 worker 通过 channel of Worker 共享
+	requestChan chan engine.Request
+	workerChan  chan chan engine.Request // 每个 worker 有自己的 channel of Request，所以 worker 通过 channel of Worker 共享
 }
 
-func (s *QueuedScheduler) Submit(request model.Request) {
+func (s *QueuedScheduler) Submit(request engine.Request) {
 	s.requestChan <- request
 }
 
-func (s *QueuedScheduler) WorkerChan() chan model.Request {
-	return make(chan model.Request)
+func (s *QueuedScheduler) WorkerChan() chan engine.Request {
+	return make(chan engine.Request)
 }
 
-func (s *QueuedScheduler) WorkerReady(worker chan model.Request) {
+func (s *QueuedScheduler) WorkerReady(worker chan engine.Request) {
 	s.workerChan <- worker
 }
 
 func (s *QueuedScheduler) Run() {
-	s.requestChan = make(chan model.Request)
-	s.workerChan = make(chan chan model.Request)
+	s.requestChan = make(chan engine.Request)
+	s.workerChan = make(chan chan engine.Request)
 	go func() {
-		var requestQ []model.Request
-		var workerQ []chan model.Request
+		var requestQ []engine.Request
+		var workerQ []chan engine.Request
 
 		for {
-			var activeRequest model.Request
-			var activeWorker chan model.Request
+			var activeRequest engine.Request
+			var activeWorker chan engine.Request
 			if len(requestQ) > 0 && len(workerQ) > 0 {
 				activeWorker = workerQ[0]
 				activeRequest = requestQ[0]
