@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/cmd/queued/engine"
-	"github.com/yuhaowin/go-learning/crawler/cmd/queued/scheduler"
+	"github.com/yuhaowin/go-learning/crawler/internal/engine"
 	"github.com/yuhaowin/go-learning/crawler/internal/model"
 	"github.com/yuhaowin/go-learning/crawler/internal/parser"
 	"github.com/yuhaowin/go-learning/crawler/internal/saver"
+	"github.com/yuhaowin/go-learning/crawler/internal/scheduler"
 )
 
 func main() {

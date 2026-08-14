@@ -4,6 +4,8 @@ import (
 	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
+// Scheduler 由 internal/scheduler 下的具体实现（SimpleScheduler、QueuedScheduler）满足，
+// ConcurrentEngine 通过替换 Scheduler 实现来切换调度策略。
 type Scheduler interface {
 	Notifier
 	Submit(model.Request)

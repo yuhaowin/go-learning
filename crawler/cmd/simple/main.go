@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/cmd/simple/engine"
+	"github.com/yuhaowin/go-learning/crawler/internal/engine"
 	"github.com/yuhaowin/go-learning/crawler/internal/model"
 	"github.com/yuhaowin/go-learning/crawler/internal/parser"
 	"github.com/yuhaowin/go-learning/crawler/internal/saver"

@@ -1,14 +1,17 @@
 package main
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/cmd/concurrent/engine"
-	"github.com/yuhaowin/go-learning/crawler/cmd/concurrent/scheduler"
+	"github.com/yuhaowin/go-learning/crawler/internal/engine"
 	"github.com/yuhaowin/go-learning/crawler/internal/model"
 	"github.com/yuhaowin/go-learning/crawler/internal/parser"
 	"github.com/yuhaowin/go-learning/crawler/internal/saver"
+	"github.com/yuhaowin/go-learning/crawler/internal/scheduler"
 )
 
 func main() {
+	// SimpleScheduler 的方法用指针接收者（Run 要给 workerChan 赋值），
+	// 所以只有 *SimpleScheduler 满足 engine.Scheduler 接口，这里必须传指针。
+	// 详见 crawler/docs/interface-values.md。
 	e := engine.ConcurrentEngine{
 		// 必须传指针：SimpleScheduler 的方法用指针接收者（因为 ConfigureMasterWorkerChan 要修改 workerChan 字段），值类型不满足 Scheduler 接口。
 		// SimpleScheduler 的两个方法 Submit 和 ConfigureMasterWorkerChan 都是定义在 *Sim pleScheduler（指针接收者）上的（scheduler/simple.go:9, :15），而不是值接收者。
