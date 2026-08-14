@@ -10,6 +10,7 @@ type SimpleScheduler struct {
 	workerChan chan model.Request
 }
 
+// Run 这里用指针接收者，因为要修改 s.workerChan；值接收者的话改的只是拷贝， 外部（包括 Submit）看到的仍然是 nil。
 func (s *SimpleScheduler) Run() {
 	s.workerChan = make(chan model.Request)
 }
@@ -20,6 +21,7 @@ func (s *SimpleScheduler) WorkerChan() chan model.Request {
 
 func (s *SimpleScheduler) Submit(request model.Request) {
 	go func() {
+		// send request down to worker channel
 		s.workerChan <- request
 	}()
 }

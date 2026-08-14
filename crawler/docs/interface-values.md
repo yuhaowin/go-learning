@@ -1,4 +1,4 @@
-# 接口值的内部结构
+### 接口值的内部结构
 
 接口变量在运行时不是直接存数据，而是存一个二元组：
 
@@ -23,7 +23,7 @@ s = FakeScheduler{}
 // s 内部 = (type: FakeScheduler, value: FakeScheduler{} 的拷贝)
 ```
 
-## 由此引出的两个坑/要点
+#### 由此引出的两个坑/要点
 
 1. **接口 nil 判断**：只有当 `(type, value)` 都是零值 `(nil, nil)` 时，接口才 `== nil`。 如果 type 已经被设成某个具体类型（哪怕
    value 是 nil 指针），接口本身就不等于 nil。
@@ -31,7 +31,7 @@ s = FakeScheduler{}
 
 ---
 
-# 为什么"值类型"字段能接收指针（`ConcurrentEngine.Scheduler`）
+### 为什么"值类型"字段能接收指针（`ConcurrentEngine.Scheduler`）
 
 `ConcurrentEngine.Scheduler` 字段的类型是 **接口** `Scheduler`（engine/concurrent.go），不是某个具体 struct。
 "值类型 / 指针类型" 的拷贝语义只针对具体类型；接口类型本身就是上面说的 `(type, value)` 二元组，
@@ -49,7 +49,7 @@ type ConcurrentEngine struct {
 
 如果字段类型换成具体的 `scheduler.SimpleScheduler`（而不是接口），才会出现真正的"值类型字段不能接收指针"的编译错误。
 
-# 为什么 SimpleScheduler 的方法必须用指针接收者
+### 为什么 SimpleScheduler 的方法必须用指针接收者
 
 `SimpleScheduler.ConfigureMasterWorkerChan` 会给 `s.workerChan` 赋值（scheduler/simple.go）。
 如果用值接收者，方法内修改的只是调用者传入值的一份拷贝，外部（包括 `Submit` 里用到的 `s.workerChan`） 看不到这次赋值，
