@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 // Scheduler 是接口类型，不是具体的 struct，所以"值类型/指针类型"的拷贝语义

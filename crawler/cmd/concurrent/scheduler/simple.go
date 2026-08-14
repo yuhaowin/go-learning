@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 type SimpleScheduler struct {

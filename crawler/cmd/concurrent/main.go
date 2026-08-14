@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/yuhaowin/go-learning/crawler/implement/concurrent/engine"
-	"github.com/yuhaowin/go-learning/crawler/implement/concurrent/scheduler"
-	"github.com/yuhaowin/go-learning/crawler/model"
-	"github.com/yuhaowin/go-learning/crawler/parser"
-	"github.com/yuhaowin/go-learning/crawler/saver"
+	"github.com/yuhaowin/go-learning/crawler/cmd/concurrent/engine"
+	"github.com/yuhaowin/go-learning/crawler/cmd/concurrent/scheduler"
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/parser"
+	"github.com/yuhaowin/go-learning/crawler/internal/saver"
 )
 
 func main() {

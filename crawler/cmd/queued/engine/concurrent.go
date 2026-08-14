@@ -1,6 +1,8 @@
 package engine
 
-import "github.com/yuhaowin/go-learning/crawler/model"
+import (
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
+)
 
 type Scheduler interface {
 	Notifier

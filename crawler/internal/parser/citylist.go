@@ -3,7 +3,7 @@ package parser
 import (
 	"regexp"
 
-	"github.com/yuhaowin/go-learning/crawler/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 var (

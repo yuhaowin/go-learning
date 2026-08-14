@@ -3,8 +3,8 @@ package engine
 import (
 	"log"
 
-	"github.com/yuhaowin/go-learning/crawler/fetcher"
-	"github.com/yuhaowin/go-learning/crawler/model"
+	"github.com/yuhaowin/go-learning/crawler/internal/fetcher"
+	"github.com/yuhaowin/go-learning/crawler/internal/model"
 )
 
 type SimpleEngine struct {
