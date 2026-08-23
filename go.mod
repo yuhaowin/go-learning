@@ -4,7 +4,6 @@ go 1.26
 
 require (
 	github.com/gin-gonic/gin v1.12.0
-	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.28.0
 	golang.org/x/net v0.57.0
 	golang.org/x/text v0.40.0
