@@ -1,0 +1,30 @@
+// Pipeline demonstrates a finite 3-stage pipeline.
+package main
+
+import "fmt"
+
+func main() {
+	naturals := make(chan int)
+	squares := make(chan int)
+
+	// Counter
+	go func() {
+		for x := range 100 {
+			naturals <- x
+		}
+		close(naturals)
+	}()
+
+	// Squarer
+	go func() {
+		for x := range naturals {
+			squares <- x * x
+		}
+		close(squares)
+	}()
+
+	// Printer (in main goroutine)
+	for x := range squares {
+		fmt.Println(x)
+	}
+}
