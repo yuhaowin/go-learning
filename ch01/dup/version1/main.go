@@ -10,6 +10,7 @@ import (
 // make(map[K]V)
 // m := make(map[string]int)
 // go run main.go < sample.txt
+// < sample.txt 把内容送给 stdin
 
 // bufio 包，处理输入和输出
 func main() {
