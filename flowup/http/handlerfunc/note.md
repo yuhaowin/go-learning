@@ -4,14 +4,14 @@
 
 ```go
 type Handler interface {
-ServeHTTP(ResponseWriter, *Request)
+    ServeHTTP(ResponseWriter, *Request)
 }
 
-type HandlerFunc func (ResponseWriter, *Request)
+type HandlerFunc func(ResponseWriter, *Request)
 
 // ServeHTTP calls f(w, r).
 func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
-f(w, r)
+    f(w, r)
 }
 ```
 
@@ -23,7 +23,7 @@ f(w, r)
 拆开看只有两步：
 
 1. **给函数签名起一个类型名**：`type HandlerFunc func(ResponseWriter, *Request)`。
-   Go 允许对任何自定义类型定义方法， **函数类型也不例外**（和 `type MyInt int` 一样）。
+   Go 允许对任何自定义类型定义方法，**函数类型也不例外**（和 `type MyInt int` 一样）。
 2. **让这个函数类型实现接口**：给 `HandlerFunc` 定义 `ServeHTTP` 方法，方法体只做一件事：调用自身 `f(w, r)`。
    于是 `HandlerFunc` 就满足了 `Handler` 接口。
 
@@ -35,17 +35,17 @@ f(w, r)
 type helloHandler struct{}
 
 func (helloHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-w.Write([]byte("hi"))
+    w.Write([]byte("hi"))
 }
 
 http.Handle("/", helloHandler{})
 ```
 
-有了 `HandlerFunc`，一个普通函数做一次 **类型转换**就变成 `Handler`，不需要 struct：
+有了 `HandlerFunc`，一个普通函数做一次 **类型转换** 就变成 `Handler`，不需要 struct：
 
 ```go
 func hello(w http.ResponseWriter, r *http.Request) {
-w.Write([]byte("hi"))
+    w.Write([]byte("hi"))
 }
 
 http.Handle("/", http.HandlerFunc(hello)) // 类型转换，不是函数调用
@@ -56,8 +56,8 @@ http.Handle("/", http.HandlerFunc(hello)) // 类型转换，不是函数调用
 `http.HandleFunc` 就是在内部帮你做了这一步：
 
 ```go
-func (mux *ServeMux) HandleFunc(pattern string, handler func (ResponseWriter, *Request)) {
-mux.Handle(pattern, HandlerFunc(handler))
+func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
+    mux.Handle(pattern, HandlerFunc(handler))
 }
 ```
 
@@ -73,10 +73,10 @@ mux.Handle(pattern, HandlerFunc(handler))
 
 ```go
 func logging(next http.Handler) http.Handler {
-return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
-log.Println(r.Method, r.URL.Path)
-next.ServeHTTP(w, r)
-})
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        log.Println(r.Method, r.URL.Path)
+        next.ServeHTTP(w, r)
+    })
 }
 
 http.Handle("/", logging(http.HandlerFunc(hello)))
@@ -89,15 +89,15 @@ http.Handle("/", logging(http.HandlerFunc(hello)))
 ```go
 // 1. Define the Single-Method Interface
 type Greeter interface {
-Greet(name string) string
+    Greet(name string) string
 }
 
 // 2. Define the Function Type Adapter
-type GreeterFunc func (string) string
+type GreeterFunc func(string) string
 
 // 3. Make the function type implement the interface
 func (f GreeterFunc) Greet(name string) string {
-return f(name) // Call the underlying function itself
+    return f(name) // Call the underlying function itself
 }
 ```
 
@@ -106,9 +106,12 @@ return f(name) // Call the underlying function itself
 ```go
 func english(name string) string { return "Hello, " + name }
 
-var g Greeter = GreeterFunc(english) // 普通函数
-var h Greeter = GreeterFunc(func (n string) string {         // 闭包
-return "你好，" + n
+// 普通函数：签名匹配，直接类型转换
+var g Greeter = GreeterFunc(english)
+
+// 闭包：同样是类型转换，先写函数字面量，再转成 GreeterFunc
+var h Greeter = GreeterFunc(func(n string) string {
+    return "你好，" + n
 })
 ```
 
