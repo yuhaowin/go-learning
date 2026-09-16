@@ -7,12 +7,12 @@ import (
 	"github.com/yuhaowin/go-learning/flowup/retriever/real"
 )
 
-type Retriever interface {
-	Get(url string) string
-}
-
 type Poster interface {
 	Post(url string) string
+}
+
+type Retriever interface {
+	Get(url string) string
 }
 
 type Connector interface {
@@ -20,12 +20,12 @@ type Connector interface {
 	Retriever
 }
 
-func download(r Retriever) string {
-	return r.Get("https://www.baidu.com")
-}
-
 func upload(p Poster) string {
 	return p.Post("https://www.baidu.com")
+}
+
+func download(r Retriever) string {
+	return r.Get("https://www.baidu.com")
 }
 
 func session(c Connector) {
